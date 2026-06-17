@@ -913,7 +913,7 @@ npx prisma migrate dev --name init
 
 echo ""
 echo "==> Seeding database..."
-npm run seed
+npx tsx prisma/seed.ts
 
 echo ""
 echo "==> Building production app..."

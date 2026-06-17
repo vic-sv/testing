@@ -7,10 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "node -r ts-node/register prisma/seed.ts"
+    "seed": "npx tsx prisma/seed.ts"
   },
   "prisma": {
-    "seed": "node -r ts-node/register prisma/seed.ts"
+    "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
