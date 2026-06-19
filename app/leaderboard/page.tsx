@@ -9,6 +9,12 @@ function calcPoints(pred: { homeScore: number; awayScore: number }, match: { hom
   return 0
 }
 
+const PODIUM = [
+  { medal: '🥈', ring: 'ring-slate-300/40', glow: 'from-slate-400/20', order: 'order-1 sm:mt-8', h: 'h-28' },
+  { medal: '🥇', ring: 'ring-amber-400/60', glow: 'from-amber-400/30', order: 'order-2 sm:order-2', h: 'h-36' },
+  { medal: '🥉', ring: 'ring-amber-700/50', glow: 'from-amber-700/20', order: 'order-3 sm:mt-12', h: 'h-24' },
+]
+
 export default async function LeaderboardPage() {
   const session = await getServerSession(authOptions)
   const currentUserId = (session!.user as any).id
@@ -27,42 +33,74 @@ export default async function LeaderboardPage() {
     })
     .sort((a, b) => b.points - a.points || b.exact - a.exact)
 
-  const medals = ['🥇', '🥈', '🥉']
+  const top3 = leaderboard.slice(0, 3)
+  const rest = leaderboard.slice(3)
+  // Podium visual order: silver, gold, bronze.
+  const podiumOrder = [top3[1], top3[0], top3[2]]
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Leaderboard</h1>
-      <div className="bg-slate-800 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-slate-700 text-slate-400">
-              <th className="py-3 px-4 text-left">#</th>
-              <th className="py-3 px-4 text-left">Player</th>
-              <th className="py-3 px-4 text-right">Picks</th>
-              <th className="py-3 px-4 text-right">Exact</th>
-              <th className="py-3 px-4 text-right">Points</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaderboard.map((u, i) => (
-              <tr key={u.id} className={`border-t border-slate-700 ${u.id === currentUserId ? 'bg-emerald-900/20' : ''}`}>
-                <td className="py-3 px-4 text-slate-400 font-bold">{medals[i] ?? i + 1}</td>
-                <td className="py-3 px-4 font-medium">
-                  {u.name}
-                  {u.id === currentUserId && <span className="ml-2 text-xs text-emerald-400">(you)</span>}
-                </td>
-                <td className="py-3 px-4 text-right text-slate-400">{u.predictions}</td>
-                <td className="py-3 px-4 text-right text-slate-400">{u.exact}</td>
-                <td className="py-3 px-4 text-right font-bold text-emerald-400">{u.points}</td>
+    <div className="space-y-8">
+      <h1 className="font-display text-4xl tracking-wide text-gradient-gold sm:text-5xl">🏆 LEADERBOARD</h1>
+
+      {top3.length > 0 && (
+        <div className="grid grid-cols-3 items-end gap-2 sm:gap-4">
+          {podiumOrder.map((u, idx) => {
+            if (!u) return <div key={idx} className={PODIUM[idx].order} />
+            const p = PODIUM[idx]
+            const isYou = u.id === currentUserId
+            return (
+              <div key={u.id} className={`flex flex-col items-center ${p.order}`}>
+                <div className="mb-2 text-3xl sm:text-4xl">{p.medal}</div>
+                <div className={`w-full rounded-2xl bg-gradient-to-b ${p.glow} to-slate-800/80 p-3 text-center ring-2 ${p.ring} ${isYou ? 'outline outline-2 outline-emerald-400' : ''}`}>
+                  <div className="truncate font-bold sm:text-lg">{u.name}</div>
+                  {isYou && <div className="text-[10px] font-semibold uppercase text-emerald-400">You</div>}
+                  <div className="mt-1 font-display text-3xl text-amber-300 sm:text-4xl">{u.points}</div>
+                  <div className="text-[10px] uppercase tracking-wide text-slate-400">points</div>
+                  <div className={`mt-2 ${p.h} rounded-t-lg bg-gradient-to-b from-emerald-600/60 to-emerald-900/60`} />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {rest.length > 0 && (
+        <div className="overflow-hidden rounded-2xl border border-white/5 bg-slate-800/60 shadow-lg">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-slate-900/60 text-xs uppercase tracking-wide text-slate-400">
+                <th className="px-4 py-3 text-left">#</th>
+                <th className="px-4 py-3 text-left">Player</th>
+                <th className="hidden px-4 py-3 text-right sm:table-cell">Picks</th>
+                <th className="px-4 py-3 text-right">Exact</th>
+                <th className="px-4 py-3 text-right">Points</th>
               </tr>
-            ))}
-            {leaderboard.length === 0 && (
-              <tr><td colSpan={5} className="py-6 text-center text-slate-500">No predictions yet</td></tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-      <p className="mt-4 text-xs text-slate-500">Scoring: Exact score = 3 pts · Correct outcome = 1 pt</p>
+            </thead>
+            <tbody>
+              {rest.map((u, i) => (
+                <tr key={u.id} className={`border-t border-white/5 ${u.id === currentUserId ? 'bg-emerald-500/10' : ''}`}>
+                  <td className="px-4 py-3 font-bold text-slate-400">{i + 4}</td>
+                  <td className="px-4 py-3 font-semibold">
+                    {u.name}
+                    {u.id === currentUserId && <span className="ml-2 text-xs text-emerald-400">(you)</span>}
+                  </td>
+                  <td className="hidden px-4 py-3 text-right text-slate-400 sm:table-cell">{u.predictions}</td>
+                  <td className="px-4 py-3 text-right text-slate-400">{u.exact}</td>
+                  <td className="px-4 py-3 text-right font-bold text-emerald-400">{u.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {leaderboard.length === 0 && (
+        <div className="rounded-2xl border border-white/5 bg-slate-800/60 py-10 text-center text-slate-500">
+          No predictions yet — be the first on the board!
+        </div>
+      )}
+
+      <p className="text-xs text-slate-500">Scoring: Exact score = 3 pts · Correct outcome = 1 pt</p>
     </div>
   )
 }

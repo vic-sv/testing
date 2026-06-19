@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { Countdown } from '@/components/Countdown'
+import { StageBadge } from '@/components/StageBadge'
+import { flag } from '@/lib/football'
 
 function calcPoints(pred: { homeScore: number; awayScore: number }, match: { homeScore: number | null; awayScore: number | null }) {
   if (match.homeScore === null || match.awayScore === null) return 0
@@ -38,91 +41,148 @@ export default async function Home() {
     .sort((a, b) => b.points - a.points)
     .slice(0, 5)
 
-  return (
-    <div className="space-y-8">
-      <div className="text-center py-8">
-        <h1 className="text-4xl font-bold text-emerald-400 mb-2">World Cup 2026</h1>
-        <p className="text-slate-400">Predict scores, earn points, beat your friends</p>
-        {!session && (
-          <div className="mt-4 flex gap-3 justify-center">
-            <Link href="/register" className="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded-lg font-semibold transition-colors">
-              Join Now
-            </Link>
-            <Link href="/login" className="bg-slate-700 hover:bg-slate-600 px-6 py-2 rounded-lg transition-colors">
-              Login
-            </Link>
-          </div>
-        )}
-      </div>
+  const medals = ['🥇', '🥈', '🥉']
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <h2 className="text-xl font-semibold mb-3 text-slate-300">Upcoming Matches</h2>
-          <div className="space-y-2">
-            {upcomingMatches.length === 0 && <p className="text-slate-500 text-sm">No upcoming matches</p>}
+  return (
+    <div className="space-y-10">
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-700 via-green-800 to-slate-900 px-6 py-12 text-center shadow-2xl shadow-emerald-900/40 sm:px-10 sm:py-16">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-emerald-300/20 blur-3xl" />
+        <div className="relative">
+          <span className="mb-4 inline-block rounded-full bg-amber-400/20 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-amber-300 ring-1 ring-amber-400/30">
+            ⚽ The Prediction Game
+          </span>
+          <h1 className="font-display text-5xl leading-none sm:text-7xl md:text-8xl">
+            <span className="text-gradient-gold drop-shadow-[0_2px_12px_rgba(245,197,24,0.35)]">WORLD CUP</span>
+            <br />
+            <span className="text-white">2026</span>
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-base text-emerald-50/90 sm:text-lg">
+            Predict every score. Earn points. Climb the table and beat your friends to glory.
+          </p>
+
+          <div className="mt-8">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-200/80">
+              Kickoff Countdown
+            </p>
+            <Countdown />
+          </div>
+
+          {!session && (
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/register"
+                className="rounded-xl bg-gradient-to-r from-amber-400 to-yellow-500 px-8 py-3 text-lg font-bold text-slate-900 shadow-lg shadow-amber-500/30 transition-transform hover:scale-105"
+              >
+                Join Now
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-xl border border-white/20 bg-white/10 px-8 py-3 text-lg font-bold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+              >
+                Login
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* MATCHES */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <section>
+          <h2 className="mb-4 font-display text-2xl tracking-wide text-emerald-300">UPCOMING MATCHES</h2>
+          <div className="space-y-3">
+            {upcomingMatches.length === 0 && <p className="text-sm text-slate-500">No upcoming matches</p>}
             {upcomingMatches.map((m) => (
-              <div key={m.id} className="bg-slate-800 rounded-lg p-3 flex justify-between items-center">
-                <div>
-                  <div className="font-medium">{m.homeTeam} vs {m.awayTeam}</div>
-                  <div className="text-xs text-slate-400">
-                    {m.stage} · {new Date(m.matchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+              <div
+                key={m.id}
+                className="group rounded-2xl border border-white/5 bg-slate-800/60 p-4 shadow-lg transition-colors hover:border-emerald-500/40"
+              >
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <StageBadge stage={m.stage} />
+                  <span className="text-xs text-slate-400">
+                    {new Date(m.matchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1 truncate font-semibold">
+                    <span className="mr-1">{flag(m.homeTeam)}</span>{m.homeTeam}
+                  </div>
+                  <span className="shrink-0 rounded-md bg-slate-900/60 px-2 py-0.5 text-xs font-bold text-slate-400">VS</span>
+                  <div className="min-w-0 flex-1 truncate text-right font-semibold">
+                    {m.awayTeam}<span className="ml-1">{flag(m.awayTeam)}</span>
                   </div>
                 </div>
                 {session && (
-                  <Link href="/predictions" className="text-xs text-emerald-400 hover:underline">Predict →</Link>
+                  <Link href="/predictions" className="mt-2 inline-block text-xs font-semibold text-emerald-400 hover:underline">
+                    Make your prediction →
+                  </Link>
                 )}
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        <div>
-          <h2 className="text-xl font-semibold mb-3 text-slate-300">Recent Results</h2>
-          <div className="space-y-2">
-            {completedMatches.length === 0 && <p className="text-slate-500 text-sm">No results yet</p>}
+        <section>
+          <h2 className="mb-4 font-display text-2xl tracking-wide text-amber-300">RECENT RESULTS</h2>
+          <div className="space-y-3">
+            {completedMatches.length === 0 && <p className="text-sm text-slate-500">No results yet</p>}
             {completedMatches.map((m) => (
-              <div key={m.id} className="bg-slate-800 rounded-lg p-3">
-                <div className="font-medium">
-                  {m.homeTeam} <span className="text-emerald-400 font-bold">{m.homeScore} – {m.awayScore}</span> {m.awayTeam}
+              <div key={m.id} className="rounded-2xl border border-white/5 bg-slate-800/60 p-4 shadow-lg">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <StageBadge stage={m.stage} />
+                  <span className="text-xs font-semibold uppercase tracking-wide text-amber-300/80">Full Time</span>
                 </div>
-                <div className="text-xs text-slate-400">{m.stage}</div>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0 flex-1 truncate font-semibold">
+                    <span className="mr-1">{flag(m.homeTeam)}</span>{m.homeTeam}
+                  </div>
+                  <span className="shrink-0 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-3 py-1 text-base font-extrabold text-white tabular-nums">
+                    {m.homeScore} – {m.awayScore}
+                  </span>
+                  <div className="min-w-0 flex-1 truncate text-right font-semibold">
+                    {m.awayTeam}<span className="ml-1">{flag(m.awayTeam)}</span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
       </div>
 
-      <div>
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-semibold text-slate-300">Leaderboard</h2>
-          {session && <Link href="/leaderboard" className="text-sm text-emerald-400 hover:underline">View all →</Link>}
+      {/* LEADERBOARD */}
+      <section>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="font-display text-2xl tracking-wide text-amber-300">🏆 LEADERBOARD</h2>
+          {session && <Link href="/leaderboard" className="text-sm font-semibold text-emerald-400 hover:underline">View all →</Link>}
         </div>
-        <div className="bg-slate-800 rounded-lg overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-white/5 bg-slate-800/60 shadow-lg">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-700 text-slate-400">
-                <th className="py-2 px-4 text-left">#</th>
-                <th className="py-2 px-4 text-left">Name</th>
-                <th className="py-2 px-4 text-right">Predictions</th>
-                <th className="py-2 px-4 text-right">Points</th>
+              <tr className="bg-slate-900/60 text-xs uppercase tracking-wide text-slate-400">
+                <th className="px-4 py-3 text-left">#</th>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="hidden px-4 py-3 text-right sm:table-cell">Picks</th>
+                <th className="px-4 py-3 text-right">Points</th>
               </tr>
             </thead>
             <tbody>
               {leaderboard.map((u, i) => (
-                <tr key={i} className="border-t border-slate-700">
-                  <td className="py-2 px-4 text-slate-400">{i + 1}</td>
-                  <td className="py-2 px-4 font-medium">{u.name}</td>
-                  <td className="py-2 px-4 text-right text-slate-400">{u.count}</td>
-                  <td className="py-2 px-4 text-right font-bold text-emerald-400">{u.points}</td>
+                <tr key={i} className="border-t border-white/5">
+                  <td className="px-4 py-3 text-lg">{medals[i] ?? <span className="text-slate-400">{i + 1}</span>}</td>
+                  <td className="px-4 py-3 font-semibold">{u.name}</td>
+                  <td className="hidden px-4 py-3 text-right text-slate-400 sm:table-cell">{u.count}</td>
+                  <td className="px-4 py-3 text-right font-bold text-emerald-400">{u.points}</td>
                 </tr>
               ))}
               {leaderboard.length === 0 && (
-                <tr><td colSpan={4} className="py-4 text-center text-slate-500">No predictions yet</td></tr>
+                <tr><td colSpan={4} className="py-6 text-center text-slate-500">No predictions yet</td></tr>
               )}
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
     </div>
   )
 }

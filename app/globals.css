@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
+}
+
+/* Vibrant dark "stadium" backdrop: deep slate with subtle emerald + gold glows. */
+.app-bg {
+  background-color: #0b1120;
+  background-image:
+    radial-gradient(60rem 60rem at 15% -10%, rgba(16, 185, 129, 0.16), transparent 60%),
+    radial-gradient(50rem 50rem at 100% 0%, rgba(245, 197, 24, 0.12), transparent 55%),
+    radial-gradient(70rem 70rem at 50% 120%, rgba(5, 150, 105, 0.12), transparent 60%);
+  background-attachment: fixed;
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+
+  /* Gradient text used for big headings. */
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent;
+  }
+  .text-gradient-pitch {
+    @apply bg-gradient-to-r from-emerald-300 via-green-400 to-emerald-500 bg-clip-text text-transparent;
+  }
 }

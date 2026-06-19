@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { ResultForm } from '@/components/ResultForm'
+import { StageBadge } from '@/components/StageBadge'
+import { flag } from '@/lib/football'
 
 export default async function AdminMatchesPage() {
   const matches = await prisma.match.findMany({ orderBy: { matchDate: 'asc' } })
@@ -19,15 +21,22 @@ export default async function AdminMatchesPage() {
       <div className="space-y-3">
         {matches.length === 0 && <p className="text-slate-500">No matches yet. Add one above.</p>}
         {matches.map((match) => (
-          <div key={match.id} className="bg-slate-800 rounded-lg p-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          <div key={match.id} className="rounded-2xl border border-white/5 bg-slate-800/60 p-4 shadow-lg">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="flex-1">
-                <div className="font-medium">{match.homeTeam} vs {match.awayTeam}</div>
-                <div className="text-xs text-slate-400">
-                  {match.stage} · {new Date(match.matchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                <div className="mb-1 flex items-center gap-2">
+                  <StageBadge stage={match.stage} />
+                  <span className="text-xs text-slate-400">
+                    {new Date(match.matchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+                <div className="font-semibold">
+                  <span className="mr-1">{flag(match.homeTeam)}</span>{match.homeTeam}
+                  <span className="mx-2 text-xs text-slate-500">vs</span>
+                  {match.awayTeam}<span className="ml-1">{flag(match.awayTeam)}</span>
                 </div>
                 {match.homeScore !== null && (
-                  <div className="text-xs text-emerald-400 mt-1">Current result: {match.homeScore}–{match.awayScore}</div>
+                  <div className="mt-1 text-xs font-semibold text-emerald-400">Current result: {match.homeScore}–{match.awayScore}</div>
                 )}
               </div>
               <ResultForm matchId={match.id} currentHome={match.homeScore} currentAway={match.awayScore} />
