@@ -1,0 +1,3 @@
+module.exports=[24366,a=>{"use strict";var b=a.i(87924),c=a.i(50944),d=a.i(72131);a.s(["ToggleAdminButton",0,function({userId:a,isAdmin:e}){let f=(0,c.useRouter)(),[g,h]=(0,d.useState)(!1);async function i(){h(!0),await fetch("/api/admin/users",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userId:a,isAdmin:!e})}),h(!1),f.refresh()}return(0,b.jsx)("button",{onClick:i,disabled:g,className:"text-xs px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 transition-colors disabled:opacity-50",children:g?"...":e?"Remove admin":"Make admin"})}])}];
+
+//# sourceMappingURL=components_ToggleAdminButton_tsx_0f4dvn0._.js.map
