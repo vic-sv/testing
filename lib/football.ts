@@ -81,6 +81,9 @@ const FLAG_CODES: Record<string, string> = {
   Indonesia: 'id',
   Thailand: 'th',
   Vietnam: 'vn',
+  'Curaçao': 'cw',
+  Haiti: 'ht',
+  TBD: '',
 }
 
 // English country name -> Ukrainian name.
@@ -162,6 +165,9 @@ const TEAM_NAMES_UK: Record<string, string> = {
   Indonesia: 'Індонезія',
   Thailand: 'Таїланд',
   Vietnam: "В'єтнам",
+  'Curaçao': 'Кюрасао',
+  Haiti: 'Гаїті',
+  TBD: 'TBD',
 }
 
 export function flagCode(team: string): string | null {
