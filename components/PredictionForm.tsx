@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { flag, stageBadgeClasses } from '@/lib/football'
+import { Flag, teamName, stageBadgeClasses, stageName } from '@/lib/football'
+import { formatKyivDateTime } from '@/lib/datetime'
 
 interface Match {
   id: string
@@ -39,7 +40,7 @@ export function PredictionForm({ match, existing }: { match: Match; existing: Pr
       setTimeout(() => setSaved(false), 2000)
     } else {
       const data = await res.json()
-      setError(data.error || 'Failed to save')
+      setError(data.error || 'Не вдалося зберегти')
     }
   }
 
@@ -47,18 +48,18 @@ export function PredictionForm({ match, existing }: { match: Match; existing: Pr
     <div className="rounded-2xl border border-white/5 bg-slate-800/60 p-4 shadow-lg transition-colors hover:border-emerald-500/40">
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide ${stageBadgeClasses(match.stage)}`}>
-          {match.stage}
+          {stageName(match.stage)}
         </span>
         <span className="text-xs text-slate-400">
-          {new Date(match.matchDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+          {formatKyivDateTime(match.matchDate)}
         </span>
       </div>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 font-semibold">
-            <span className="truncate"><span className="mr-1">{flag(match.homeTeam)}</span>{match.homeTeam}</span>
-            <span className="shrink-0 text-xs text-slate-500">vs</span>
-            <span className="truncate">{match.awayTeam}<span className="ml-1">{flag(match.awayTeam)}</span></span>
+            <span className="truncate"><Flag country={match.homeTeam} className="mr-1.5" />{teamName(match.homeTeam)}</span>
+            <span className="shrink-0 text-xs text-slate-500">проти</span>
+            <span className="truncate">{teamName(match.awayTeam)}<Flag country={match.awayTeam} className="ml-1.5" /></span>
           </div>
           {error && <div className="mt-1 text-xs text-red-400">{error}</div>}
         </div>
@@ -75,7 +76,7 @@ export function PredictionForm({ match, existing }: { match: Match; existing: Pr
             placeholder="0" required
           />
           <button type="submit" disabled={loading} className="rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition-transform hover:scale-105 disabled:opacity-50">
-            {saved ? '✓ Saved' : loading ? '...' : existing ? 'Update' : 'Save'}
+            {saved ? '✓ Збережено' : loading ? '...' : existing ? 'Оновити' : 'Зберегти'}
           </button>
         </form>
       </div>

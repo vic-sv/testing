@@ -40,7 +40,7 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="font-display text-4xl tracking-wide text-gradient-gold sm:text-5xl">🏆 LEADERBOARD</h1>
+      <h1 className="font-display text-4xl tracking-wide text-gradient-gold sm:text-5xl">🏆 ТУРНІРНА ТАБЛИЦЯ</h1>
 
       {top3.length > 0 && (
         <div className="grid grid-cols-3 items-end gap-2 sm:gap-4">
@@ -53,9 +53,9 @@ export default async function LeaderboardPage() {
                 <div className="mb-2 text-3xl sm:text-4xl">{p.medal}</div>
                 <div className={`w-full rounded-2xl bg-gradient-to-b ${p.glow} to-slate-800/80 p-3 text-center ring-2 ${p.ring} ${isYou ? 'outline outline-2 outline-emerald-400' : ''}`}>
                   <div className="truncate font-bold sm:text-lg">{u.name}</div>
-                  {isYou && <div className="text-[10px] font-semibold uppercase text-emerald-400">You</div>}
+                  {isYou && <div className="text-[10px] font-semibold uppercase text-emerald-400">Ви</div>}
                   <div className="mt-1 font-display text-3xl text-amber-300 sm:text-4xl">{u.points}</div>
-                  <div className="text-[10px] uppercase tracking-wide text-slate-400">points</div>
+                  <div className="text-[10px] uppercase tracking-wide text-slate-400">очки</div>
                   <div className={`mt-2 ${p.h} rounded-t-lg bg-gradient-to-b from-emerald-600/60 to-emerald-900/60`} />
                 </div>
               </div>
@@ -70,10 +70,10 @@ export default async function LeaderboardPage() {
             <thead>
               <tr className="bg-slate-900/60 text-xs uppercase tracking-wide text-slate-400">
                 <th className="px-4 py-3 text-left">#</th>
-                <th className="px-4 py-3 text-left">Player</th>
-                <th className="hidden px-4 py-3 text-right sm:table-cell">Picks</th>
-                <th className="px-4 py-3 text-right">Exact</th>
-                <th className="px-4 py-3 text-right">Points</th>
+                <th className="px-4 py-3 text-left">Гравець</th>
+                <th className="hidden px-4 py-3 text-right sm:table-cell">Прогнози</th>
+                <th className="px-4 py-3 text-right">Точні</th>
+                <th className="px-4 py-3 text-right">Очки</th>
               </tr>
             </thead>
             <tbody>
@@ -82,7 +82,7 @@ export default async function LeaderboardPage() {
                   <td className="px-4 py-3 font-bold text-slate-400">{i + 4}</td>
                   <td className="px-4 py-3 font-semibold">
                     {u.name}
-                    {u.id === currentUserId && <span className="ml-2 text-xs text-emerald-400">(you)</span>}
+                    {u.id === currentUserId && <span className="ml-2 text-xs text-emerald-400">(ви)</span>}
                   </td>
                   <td className="hidden px-4 py-3 text-right text-slate-400 sm:table-cell">{u.predictions}</td>
                   <td className="px-4 py-3 text-right text-slate-400">{u.exact}</td>
@@ -96,11 +96,11 @@ export default async function LeaderboardPage() {
 
       {leaderboard.length === 0 && (
         <div className="rounded-2xl border border-white/5 bg-slate-800/60 py-10 text-center text-slate-500">
-          No predictions yet — be the first on the board!
+          Прогнозів ще немає — станьте першим у таблиці!
         </div>
       )}
 
-      <p className="text-xs text-slate-500">Scoring: Exact score = 3 pts · Correct outcome = 1 pt</p>
+      <p className="text-xs text-slate-500">Нарахування: Точний рахунок = 3 очки · Правильний результат = 1 очко</p>
     </div>
   )
 }

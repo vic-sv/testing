@@ -1,0 +1,9 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[674],{8390:function(e,t,n){Promise.resolve().then(n.bind(n,3015)),Promise.resolve().then(n.t.bind(n,8326,23))},3015:function(e,t,n){"use strict";n.r(t),n.d(t,{ToggleAdminButton:function(){return ToggleAdminButton}});var o=n(7437),r=n(4033),s=n(2265);function ToggleAdminButton(e){let{userId:t,isAdmin:n}=e,i=(0,r.useRouter)(),[u,a]=(0,s.useState)(!1);async function toggle(){a(!0),await fetch("/api/admin/users",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({userId:t,isAdmin:!n})}),a(!1),i.refresh()}return(0,o.jsx)("button",{onClick:toggle,disabled:u,className:"text-xs px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 transition-colors disabled:opacity-50",children:u?"...":n?"Зняти адміна":"Зробити адміном"})}},622:function(e,t,n){"use strict";/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var o=n(2265),r=Symbol.for("react.element"),s=Symbol.for("react.fragment"),i=Object.prototype.hasOwnProperty,u=o.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,a={key:!0,ref:!0,__self:!0,__source:!0};function q(e,t,n){var o,s={},c=null,l=null;for(o in void 0!==n&&(c=""+n),void 0!==t.key&&(c=""+t.key),void 0!==t.ref&&(l=t.ref),t)i.call(t,o)&&!a.hasOwnProperty(o)&&(s[o]=t[o]);if(e&&e.defaultProps)for(o in t=e.defaultProps)void 0===s[o]&&(s[o]=t[o]);return{$$typeof:r,type:e,key:c,ref:l,props:s,_owner:u.current}}t.Fragment=s,t.jsx=q,t.jsxs=q},7437:function(e,t,n){"use strict";e.exports=n(622)},4033:function(e,t,n){e.exports=n(94)}},function(e){e.O(0,[326,971,472,744],function(){return e(e.s=8390)}),_N_E=e.O()}]);

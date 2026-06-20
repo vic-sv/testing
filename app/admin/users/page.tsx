@@ -8,17 +8,17 @@ export default async function AdminUsersPage() {
   return (
     <div>
       <div className="mb-6">
-        <Link href="/admin" className="text-sm text-slate-400 hover:text-slate-300">← Admin</Link>
-        <h1 className="text-2xl font-bold mt-1">Users</h1>
+        <Link href="/admin" className="text-sm text-slate-400 hover:text-slate-300">← Адмін</Link>
+        <h1 className="text-2xl font-bold mt-1">Користувачі</h1>
       </div>
       <div className="bg-slate-800 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-slate-700 text-slate-400">
-              <th className="py-3 px-4 text-left">Name</th>
-              <th className="py-3 px-4 text-left">Email</th>
-              <th className="py-3 px-4 text-left">Admin</th>
-              <th className="py-3 px-4 text-left">Actions</th>
+              <th className="py-3 px-4 text-left">Ім'я</th>
+              <th className="py-3 px-4 text-left">Електронна пошта</th>
+              <th className="py-3 px-4 text-left">Адмін</th>
+              <th className="py-3 px-4 text-left">Дії</th>
             </tr>
           </thead>
           <tbody>

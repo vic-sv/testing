@@ -26,7 +26,7 @@ export function ResultForm({ matchId, currentHome, currentAway }: {
 
   return (
     <form onSubmit={handleSubmit} className="flex items-center gap-2">
-      <span className="text-xs text-slate-500">Result:</span>
+      <span className="text-xs text-slate-500">Результат:</span>
       <input
         type="number" min="0" max="20" value={home} onChange={(e) => setHome(e.target.value)}
         className="w-12 bg-slate-700 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-yellow-500"
@@ -39,7 +39,7 @@ export function ResultForm({ matchId, currentHome, currentAway }: {
         placeholder="0" required
       />
       <button type="submit" disabled={loading} className="bg-yellow-600 hover:bg-yellow-500 px-3 py-1 rounded text-sm transition-colors disabled:opacity-50">
-        {loading ? '...' : currentHome !== null ? 'Update' : 'Set'}
+        {loading ? '...' : currentHome !== null ? 'Оновити' : 'Внести'}
       </button>
     </form>
   )

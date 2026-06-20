@@ -8,13 +8,13 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const bebas = Bebas_Neue({ subsets: ['latin'], weight: '400', variable: '--font-display' })
 
 export const metadata: Metadata = {
-  title: 'World Cup 2026 Predictions',
-  description: 'Predict match scores and compete with friends',
+  title: 'Прогнози Чемпіонату світу 2026',
+  description: 'Вгадуй рахунки матчів та змагайся з друзями',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${bebas.variable}`}>
+    <html lang="uk" className={`${inter.variable} ${bebas.variable}`}>
       <body className="app-bg text-white min-h-screen antialiased">
         <Providers>
           <Navbar />

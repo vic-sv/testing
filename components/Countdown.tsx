@@ -50,7 +50,7 @@ export function Countdown() {
           <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500" />
         </span>
         <span className="font-display text-2xl font-bold uppercase tracking-wide text-white sm:text-3xl">
-          The tournament is LIVE!
+          Турнір НАЖИВО!
         </span>
       </div>
     )
@@ -58,10 +58,10 @@ export function Countdown() {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-      <Unit value={t.days} label="Days" />
-      <Unit value={t.hours} label="Hrs" />
-      <Unit value={t.minutes} label="Min" />
-      <Unit value={t.seconds} label="Sec" />
+      <Unit value={t.days} label="Дні" />
+      <Unit value={t.hours} label="Год" />
+      <Unit value={t.minutes} label="Хв" />
+      <Unit value={t.seconds} label="Сек" />
     </div>
   )
 }

@@ -19,7 +19,7 @@ export function ToggleAdminButton({ userId, isAdmin }: { userId: string; isAdmin
 
   return (
     <button onClick={toggle} disabled={loading} className="text-xs px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 transition-colors disabled:opacity-50">
-      {loading ? '...' : isAdmin ? 'Remove admin' : 'Make admin'}
+      {loading ? '...' : isAdmin ? 'Зняти адміна' : 'Зробити адміном'}
     </button>
   )
 }

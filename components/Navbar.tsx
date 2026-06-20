@@ -20,31 +20,31 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 text-sm md:flex">
-          <Link href="/" className={linkBase}>Home</Link>
+          <Link href="/" className={linkBase}>Головна</Link>
           {session ? (
             <>
-              <Link href="/predictions" className={linkBase}>My Predictions</Link>
-              <Link href="/leaderboard" className={linkBase}>Leaderboard</Link>
+              <Link href="/predictions" className={linkBase}>Мої прогнози</Link>
+              <Link href="/leaderboard" className={linkBase}>Турнірна таблиця</Link>
               {(session.user as any).isAdmin && (
                 <Link href="/admin" className="rounded-lg px-3 py-2 font-semibold text-amber-400 transition-colors hover:bg-amber-400/10">
-                  Admin
+                  Адмін
                 </Link>
               )}
               <button
                 onClick={() => signOut()}
                 className="ml-1 rounded-lg bg-white/5 px-3 py-2 font-medium transition-colors hover:bg-white/10"
               >
-                Sign out <span className="text-slate-400">({session.user?.name})</span>
+                Вийти <span className="text-slate-400">({session.user?.name})</span>
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className={linkBase}>Login</Link>
+              <Link href="/login" className={linkBase}>Увійти</Link>
               <Link
                 href="/register"
                 className="ml-1 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2 font-semibold text-white shadow-lg shadow-emerald-600/20 transition-transform hover:scale-105"
               >
-                Register
+                Реєстрація
               </Link>
             </>
           )}
@@ -65,11 +65,11 @@ export function Navbar() {
       {open && (
         <div className="border-t border-white/10 bg-slate-950/95 px-4 py-3 md:hidden">
           <div className="flex flex-col gap-1 text-base">
-            <Link href="/" onClick={close} className={linkBase}>Home</Link>
+            <Link href="/" onClick={close} className={linkBase}>Головна</Link>
             {session ? (
               <>
-                <Link href="/predictions" onClick={close} className={linkBase}>My Predictions</Link>
-                <Link href="/leaderboard" onClick={close} className={linkBase}>Leaderboard</Link>
+                <Link href="/predictions" onClick={close} className={linkBase}>Мої прогнози</Link>
+                <Link href="/leaderboard" onClick={close} className={linkBase}>Турнірна таблиця</Link>
                 {(session.user as any).isAdmin && (
                   <Link href="/admin" onClick={close} className="rounded-lg px-3 py-2 font-semibold text-amber-400 hover:bg-amber-400/10">
                     Admin
@@ -79,18 +79,18 @@ export function Navbar() {
                   onClick={() => { close(); signOut() }}
                   className="mt-1 rounded-lg bg-white/5 px-3 py-2 text-left font-medium hover:bg-white/10"
                 >
-                  Sign out ({session.user?.name})
+                  Вийти ({session.user?.name})
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" onClick={close} className={linkBase}>Login</Link>
+                <Link href="/login" onClick={close} className={linkBase}>Увійти</Link>
                 <Link
                   href="/register"
                   onClick={close}
                   className="mt-1 rounded-lg bg-gradient-to-r from-emerald-500 to-green-600 px-4 py-2 text-center font-semibold text-white shadow-lg shadow-emerald-600/20"
                 >
-                  Register
+                  Реєстрація
                 </Link>
               </>
             )}

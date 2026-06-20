@@ -1,4 +1,4 @@
-import { stageBadgeClasses } from '@/lib/football'
+import { stageBadgeClasses, stageName } from '@/lib/football'
 
 export function StageBadge({ stage, className = '' }: { stage: string; className?: string }) {
   return (
@@ -7,7 +7,7 @@ export function StageBadge({ stage, className = '' }: { stage: string; className
         stage
       )} ${className}`}
     >
-      {stage}
+      {stageName(stage)}
     </span>
   )
 }
